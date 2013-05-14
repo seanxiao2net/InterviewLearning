@@ -1,0 +1,40 @@
+#include <string.h>
+#include <stdio.h>
+
+class Y {
+private:
+  char * string;
+  int number;
+public:
+  // Constructor
+  Y(const char*, int);
+  void Display();
+  // Destructor
+  ~Y() { delete[] string; printf("destructor is called\n");}
+};
+
+// Define class Y constructor
+Y::Y(const char* n, int a) {
+  string = strcpy(new char[strlen(n) + 1 ], n);
+  number = a;
+}
+
+void Y::Display()
+{
+	printf("test\n");
+}
+
+int main () {
+  // Create and initialize
+  // object of class Y
+  Y yobj = Y("somestring", 10);
+  yobj.Display();
+	printf("test\n");
+  delete &yobj;
+
+  // ...
+
+  // Destructor ~Y is called before
+  // control returns from main()
+	return 0;
+}

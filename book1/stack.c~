@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//stack consiste push() and pop() function
+
+typedef struct iStack
+{
+	int data;
+	struct iStack *next;
+}iStack;
+
+int createStack(iStack **stack)
+{
+	*stack = 0;
+	return 1;
+}
+
+int delStack(iStack **stack)
+{
+	//iStack *current = *stack;
+	iStack *del;
+
+	while (*stack)
+	{
+		del = *stack;
+		*stack = (*stack)->next;
+		free(del);
+	}
+	*stack = 0;
+
+	return 1;
+}
+
+int push(iStack **stack, int val)
+{
+	iStack *newitem;
+
+	newitem = malloc (sizeof(iStack));
+	if (newitem == 0) return 0;
+
+	newitem->next = *stack;
+	*stack = newitem;
+	newitem->data = val;
+
+	return 1;
+}
+
+int pop(iStack **stack, int *retval)
+{
+	if (*stack != 0)
+	{
+		*retval = (*stack)->data;
+		*stack = (*stack)->next;
+		return 1;
+	}
+	return 0;
+}
+
+
+int main()
+{
+	iStack *head;	//initialize istack
+	int iDisplay, ret;
+
+	createStack(&head);
+	
+	push (&head, 1);
+	push (&head, 2);
+	push (&head, 3);
+	push (&head, 4);
+
+	//delStack(&head);
+
+	ret = pop (&head, &iDisplay);
+	printf("pop out %d %d\n",ret, iDisplay);
+	ret = pop (&head, &iDisplay);
+	printf("pop out %d %d\n",ret, iDisplay);
+	ret = pop (&head, &iDisplay);
+	printf("pop out %d %d\n",ret, iDisplay);
+	ret = pop (&head, &iDisplay);
+	printf("pop out %d %d\n",ret, iDisplay);
+	ret = pop (&head, &iDisplay);
+	printf("pop out %d %d\n",ret, iDisplay);
+	return 0;
+}

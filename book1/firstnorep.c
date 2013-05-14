@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char firstNR(char * str)
+{
+	int buffer[256];
+	int i;
+
+	for (i=0; i<256; i++)
+	{
+		buffer[i]=0;
+	}
+
+	for (i = 0; i< strlen(str); i++)
+	{
+		buffer[(int)str[i]]++;
+		printf ("count\n");
+	}
+
+	for (i = 0; i< strlen(str); i++)
+	{
+		if (buffer[(int)str[i]] == 1)
+			return str[i];
+	}
+	
+	return 0;
+}
+
+int main()
+{
+	char result;
+	const char* str= "teeter";
+	printf("%s\n",str);
+	result = firstNR(str);
+
+	printf("the first char is %c \n", result);
+
+	return 0;
+}

@@ -1,0 +1,15 @@
+#include <iostream>
+#include <string>
+
+int main()
+{
+	string word;
+
+	while (cin>>word)
+	{
+		cout << "word read is: " << word << endl;
+	}
+
+	cout << "end of line"<< endl;
+	return 0;
+}

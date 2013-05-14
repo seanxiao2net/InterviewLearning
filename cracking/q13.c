@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int excepHandle(const char* str1, const char* str2)
+{
+	int i;
+
+	if ((strlen(str1) == 0)||( strlen(str1) != strlen(str2) ))
+	{
+		return 1;
+	}
+
+	// abcd abcd is not permutation
+	for (i=0;i<strlen(str1); i++)
+	{
+		if(*(str1+i) != *(str2+i))
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int permuChek(const char* str1, const char* str2)
+{
+	int i;
+	int charTab[256];
+
+	for (i=0;i<256;i++)
+		charTab[i]=0;
+
+	if (excepHandle(str1,str2)) return 0;
+
+	for (i=0;i<strlen(str1);i++)
+	{
+		charTab[*(str1+i)]++;
+	}
+
+	for (i=0;i<strlen(str2);i++)
+	{
+		charTab[*(str2+i)]--;
+
+		if (charTab[*(str2+i)]<0)
+			return 0;
+	}
+	return 1;
+}
+
+int main()
+{
+	const char *str1 = "abcd";
+	const char *str2 = "acbd";
+	int res;
+
+	res = permuChek(str1,str2);
+
+	printf("result is %d\n",res);
+
+	return 0;
+}
