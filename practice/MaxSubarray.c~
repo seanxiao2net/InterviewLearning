@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int findMin(int arr[], int sz, int *l, int *r, int *val)
+{
+	int i;
+	int x=0,y=0,z=0;
+	int l_max = 0;
+	int l_min = 0;
+
+	for (i=0; i<sz; i++)
+	{
+		x += arr[i];
+
+		if (x<y)	//update local minimium
+		{
+			y = x;
+			l_min = i;
+		}
+
+		if (x-y > z)		// find local maximum
+		{
+			z = x-y;
+			l_max = i;
+
+
+			*l = l_min+1;
+			*r = l_max;
+			*val = z;
+		}
+
+		printf("x:%d y:%d z:%d\n", x, y, z);
+	}
+
+	return 0;
+}
+
+
+/*int findMin(int arr[], int sz, int *l, int *r, int *val)*/
+/*{*/
+/*	int i;*/
+/*	int *x, *y, *z;*/
+/*	int local_min;*/
+/*	int local_max;*/
+
+/*	x = malloc(sz*sizeof(int));*/
+/*	y = malloc(sz*sizeof(int));*/
+/*	z = malloc(sz*sizeof(int));*/
+/*	*x = 0;*/
+/*	*y = 0;*/
+/*	*z = 0;*/
+
+/*	for (i=0; i<sz; i++)*/
+/*	{*/
+/*		//update x each iteration*/
+/*		if (i==0)	x[i] = arr[i];*/
+/*		else		x[i] = x[i-1]+arr[i];*/
+
+/*		if ((i!=0)&&(x[i]<x[i-1])&&(x[i]<y[i-1]))//update for local minimium*/
+/*		{*/
+/*			local_min = i;*/
+/*			y[i] = x[i];*/
+/*		}*/
+/*		else if (i == 0)	y[i] = x[i];*/
+/*		else*/
+/*		{*/
+/*			y[i] = y[i-1];*/
+/*		}*/
+/*		*/
+/*		if ((i!=0)&&(x[i]-y[i]>z[i-1]))	//update for local maximum*/
+/*		{*/
+/*			z[i] = x[i]-y[i];*/
+/*			local_max = i;*/
+/*		}*/
+/*		else if (i == 0)	z[i] = x[i];*/
+/*		else*/
+/*		{*/
+/*			z[i] = z[i-1];*/
+/*		}*/
+
+/*	}*/
+
+/*	for (i=0; i<sz; i++)*/
+/*	{*/
+/*		printf("x	%d	y	%d	z	%d\n", x[i],y[i],z[i]);*/
+/*	}*/
+
+/*	return 0;*/
+/*}*/
+
+
+
+int main()
+{
+	int arr[] = {1,-3,5,-2,9,-8,-6,4};
+	int l=0,r=0,val=0;
+
+	findMin(arr, 8, &l, &r, &val);
+
+	printf("the largest sub array start from %d to %d, total val %d\n", l, r, val);
+
+	return 0;
+}

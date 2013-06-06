@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void Merge(int arr[], int begin_first, int begin_second, int end)
+{
+	int i, j, k;
+	int *buf;
+	i = begin_first;
+	j = begin_second;
+	k = 0;
+
+	buf = malloc((end-begin_first+1)*sizeof(int));
+
+	while (i<=(begin_second-1) && j<=end)
+	{
+		if (arr[i]<arr[j])
+		{
+			*(buf+k) = arr[i];
+			++i; ++k;
+		}
+		else 
+		{
+			*(buf+k) = arr[j];
+			++j; ++k;
+		}
+	}
+
+	while (i<=(begin_second-1))
+	{
+		buf[k] = arr[i];
+		++i; ++k;
+	}
+
+	while (j<=end)
+	{
+		buf[k] = arr[j];
+		++j; ++k;
+	}
+
+	for (k=0; k<=end-begin_first; k++)
+	{
+		arr[begin_first+k] = *(buf+k);
+
+	}
+
+	free(buf);
+}
+
+void MergeSort(int arr[], int begin, int end)
+{
+	int mid = (begin+end)/2;
+
+	if (end-begin <1)	return;
+
+	MergeSort(arr, begin, mid);
+	MergeSort(arr, mid+1, end);
+
+	Merge(arr, begin, mid+1, end);
+}
+
+int main()
+{
+	int arr[]={3,4,2,5,6,7,1,2,9};
+	printf("%d %d %d %d %d %d %d %d %d\n\n",arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8]);
+
+	MergeSort(arr, 0, 8);
+	printf("%d %d %d %d %d %d %d %d %d\n",arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8]);
+
+	return 0;
+}

@@ -1,0 +1,59 @@
+#include <stdio.h>
+
+void print(int m[5][5])
+{
+	int i,j;
+
+	for (j=0;j<5;++j)
+	{
+		for (i=0;i<5;++i)
+		{
+			printf("%d	", m[j][i]);
+		}
+		printf("\n");
+	}
+}
+
+void rotate(int m[5][5], int dim)
+{
+	int i,j;
+	int buff;
+
+	for (i=0; i<dim/2; ++i)
+	{
+		for (j=0; j< dim-2*i-1; j++)
+		{
+			buff = m[i][i+j];
+			m[i][i+j] = m[dim-1-i-j][i];
+			m[dim-1-i-j][i] = m[dim-1-i][dim-1-i-j];
+			m[dim-1-i][dim-1-i-j] = m[i+j][dim-1-i];
+			m[i+j][dim-1-i] = buff;
+
+
+		}
+/*		printf("new\n");*/
+/*		print(m);*/
+	}
+}
+
+int main()
+{
+	int m[5][5];
+	int i,j, k=0;
+
+	for (j=0; j<5; j++)
+		for (i=0; i<5; i++)
+		{
+			m[j][i] = k++;
+		}
+
+	print(m);
+
+	rotate(m,5);
+
+	printf("new\n");
+
+	print(m);
+
+	return 0;
+}
