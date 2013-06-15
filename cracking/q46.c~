@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//in order successor
+
+typedef struct Node
+{
+	int val;
+	struct Node* left;
+	struct Node* right;
+} Node;
+
+
+void maketree(int arr[], int head, int tail, Node** dest)
+{
+	if (head > tail)
+	{
+		*dest = NULL;
+	 	return;
+	}
+	int mid = (head+tail)/2;
+	(*dest) = malloc(sizeof(Node));
+	(*dest)->val = arr[mid];
+	maketree(arr, head, mid-1, &((*dest)->left));
+	maketree(arr, mid+1, tail, &((*dest)->right));
+}
+
+void inorder(Node* root)
+{
+	if(root == NULL) return;
+	inorder(root->left);
+	printf("val: %d\n", root->val);
+	inorder(root->right);
+}
+
+void preorder(Node* root)
+{
+	if(root == NULL) return;
+	printf("val: %d\n", root->val);
+	preorder(root->left);
+	preorder(root->right);
+}
+
+int inorder_succ(Node* root, Node* tar)
+{
+	int res;
+	Node* curr = root;
+
+	if (!root || !tar) return -1;
+
+	if (tar->right != NULL)
+	{
+		//search for the smallest
+		curr = tar->right;
+		while (curr->left)
+		{
+			curr = curr->left;
+		}
+		return curr->val;
+	}
+	else
+	{
+		while (curr != tar)
+		{
+			if(curr->val > tar->val)
+			{
+				res = curr->val;
+				curr = curr->left;
+			}
+			else
+			{
+				curr = curr->right;
+			}
+		}
+	}
+	return res;
+}
+
+
+
+int main()
+{
+	Node* root;
+	Node* test;
+	int arr[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+
+	maketree(arr, 0, sizeof(arr)/sizeof(int)-1, &root);
+
+	test = root->left->right->right->right;
+
+	printf("%d is looking for %d\n", test->val,inorder_succ(root, test));
+
+	return 0;
+}

@@ -1,0 +1,68 @@
+#include <string>
+#include <vector>
+#include <ctime>
+
+using std::string;
+using std::vector;
+
+class Directory;
+class Entry;
+
+class Entry {
+public:
+Entry(string n, Entry* dir): name(n), created(time(0)),modified(time(0)), visited(time(0)), parent((Directory*)dir) {}
+virtual ~Entry(){}
+time_t GetCreated() {return created;}
+time_t GetModified() {return modified;}
+time_t GetVisited() {return visited;}
+void UpdateModified() {time(&modified);}
+void UpdateVisited() {time(&visited);}
+string GetFullPath();
+bool Delete(Entry* en);
+
+protected:
+string name;
+time_t created;
+time_t modified;
+time_t visited;
+Directory* parent;
+};
+
+class File : public Entry {
+public:
+File(string n, Entry *dir): Entry(n, dir), size(0) {}
+virtual ~File(){}
+string GetContent(){return content;}
+int GetSize() {return size;}
+void UpdateFile(string str){ content = str; size = content.size();}
+
+private:
+string content;
+int size;
+};
+
+class Directory: public Entry {
+public:
+Directory(string n, Entry* dir): Entry(n, dir){}
+virtual ~Directory(){}
+void AddChild(Entry* e) {child.push_back(e);}
+bool DeleteEntry(Entry *e);
+void Search(string str);
+void List(int method);
+int GetSize();
+int GetFileNum();
+
+private:
+vector<Entry*> child;
+};
+
+bool Entry::Delete(Entry* en) { 
+	if (parent == NULL) return false;
+	else return parent->DeleteEntry(NULL);
+}
+
+int main() {
+
+
+	return 0;
+}

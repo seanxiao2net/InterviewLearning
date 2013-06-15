@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <string.h>
+void Permutation(char* src, unsigned char *mark, char* buf, int sz, int wtoken) {
+	int i;
+
+	if (wtoken == sz) {
+		buf[wtoken] = '\0';
+		printf("%s\n", buf);
+	}
+
+	for (i=0; i<sz; ++i)
+	{
+		if (mark[i] == 0) {
+			buf[wtoken] = src[i];
+			mark[i] = 1;
+			Permutation(src, mark, buf, sz, wtoken);
+			mark[i] = 0;
+		}
+	}
+}
+
+
+int main() {
+	char str[]="abcd";
+	int sz = strlen(str);
+	char buf[sz+1];
+	unsigned char mark[sz];
+	int i;
+
+	for (i=0; i<sz; ++i) {
+		mark[i] = 0;
+	}
+
+	Permutation(str, mark, buf, sz, 0);
+
+
+
+	return 0;
+}

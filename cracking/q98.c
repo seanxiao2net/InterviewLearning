@@ -1,0 +1,41 @@
+#include <stdio.h>
+
+int change(int amount, int result[], int token) {
+	int max;
+	int coin;
+	int i;
+	int ways=0;
+
+	if (token == 0) coin = 25;
+	else if (token == 1) coin = 10;
+	else if (token == 2) coin = 5;
+	else coin = 1;
+
+	if (token != 3) {
+		max = amount/coin;
+		for (i = 0; i<=max; ++i) {
+			result[token] = i;
+			ways += change(amount-i*coin, result, token+1);
+		}
+	} else {
+		result[3] = amount;
+		printf("25c: %d, 10c: %d, 5c: %d, 1c: %d\n", result[0],result[1],result[2],result[3]);
+		return 1;
+	}
+	return ways;
+}
+
+
+int main() {
+	int result[4];
+	int i;
+	int w;
+
+	for (i=0; i<4; ++i)
+		result[i] = 0;
+
+	w = change(30, result, 0);
+
+	printf("%d ways\n", w);
+	return 0;
+}

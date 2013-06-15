@@ -1,0 +1,74 @@
+#include <vector>
+#include <string>
+using std::string;
+using std::vector;
+
+class song
+{
+public:
+song(const char* filePath): path(filePath){};
+~song(){};
+void setName();
+void setSinger();
+void setAlbum();
+
+private:
+string name;
+string singer;
+string album;
+string path;
+};
+
+class playlist
+{
+public:
+playlist():currSong(0){}
+~playlist(){}
+void ClearList(){MyList.clear();}
+song* GetSong(int val){return MyList[val];}
+void AddSong(song* newsong){ MyList.push_back(newsong);}
+void MoveUp(int val){}
+void MoveDown(int val){};
+song* NextSong(){return MyList[++currSong];}
+song* PrevSong(){return MyList[--currSong];}
+playlist* GetList() {return this;}
+
+private:
+vector<song*> MyList;
+int currSong;
+int NumOfSongs;
+};
+
+class player
+{
+public:
+player(playlist* newlist){currlist = newlist;}
+~player(){}
+void SetPlayList(playlist* newlist){currlist = newlist;}
+playlist* GetPlayList() {return currlist;}
+void PlaySong(song* curr);
+
+private:
+playlist* currlist;
+};
+
+class jukebox
+{
+public:
+jukebox();
+~jukebox();
+vector<playlist>* Addlist();
+void DeleteList(int num);
+song* GetNewSong();
+
+private:
+player defaultPlayer;
+vector<playlist> Mylists;
+};
+
+int main()
+{
+
+
+	return 0;
+}

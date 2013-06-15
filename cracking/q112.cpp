@@ -1,0 +1,79 @@
+#include <string>
+#include <iostream>
+
+using std::string;
+using std::cout;
+using std::endl;
+
+bool isAnagram(string &s1, string &s2) {
+	int str1[26];
+	int str2[26];
+	unsigned int i;
+
+	if (s1.size() != s2.size()) return false;
+
+	for (i=0; i<26; ++i) {
+		str1[i]=0; str2[i] = 0;
+	}
+
+	for (i=0; i<s1.size(); ++i) {
+		str1[tolower(s1[i])-'a'];
+		str2[tolower(s2[i])-'a'];
+	}
+
+	for (i=0; i<26; ++i) {
+		if (str1[i] != str2[i]) return false;
+	}
+
+	return true;
+}
+
+void swap(string &s1, string &s2) {
+	string tmp;
+	tmp = s1;
+	s1 = s2;
+	s2 = tmp;
+}
+
+void Sort(string in[], int sz) {
+	int i, j, k;
+
+	for (i=0; i<sz; ++i) {
+		k = j = i+1;
+		k = j+1;
+		if (k< sz) {
+			for (;k<sz; ++k) {
+				if (isAnagram(in[i], in[k])) {
+					if(j!=k) {
+						swap(in[j], in[k]);
+						++k;
+						++j;
+					}
+					else ++k;
+				}
+			}
+		}
+	}
+}
+
+int main() {
+	string test[10];
+	test[0] = "ice";
+	test[1] = "cei";
+	test[2] = "eci";
+	test[3] = "snow";
+	test[4] = "game";
+	test[5] = "nows";
+	test[6] = "home";
+	test[7] = "amge";
+	test[8] = "ohme";
+	test[9] = "mage";
+
+	Sort(test, 10);
+
+	for (int i=0; i<10; ++i)
+		cout<<test[i]<<endl;
+
+
+	return 0;
+}
