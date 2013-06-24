@@ -1,0 +1,23 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+void* MallocMod(size_t sz, size_t align) {
+	void *p1;
+	void **p2;
+	int offset = align -1 + sizeof(void*);
+	if ((p1 = malloc (sz+offset))==NULL) return NULL;
+	p2 = (void**)(((size_t)(p1)+offset) & ~(align -1));
+	p2[-1] = p1;
+	return p2;
+}
+
+void FreeMod(void* ptr) {
+	void *p = ((void**)ptr)[-1];
+	free(p);
+}
+
+int main() {
+
+
+	return 0;
+}

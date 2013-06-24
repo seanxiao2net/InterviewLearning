@@ -1,0 +1,124 @@
+#include <iostream>
+using std::cout;
+using std::endl;
+
+class Node {
+public:
+	Node(int v): val(v), repeats(1), left(NULL), right(NULL) {}
+	~Node() {
+		if(left != NULL) delete(left);
+		if(right != NULL) delete (right);
+	}
+	void SetLeft(Node* l) {left = l;}
+	void SetRight(Node* r) {right = r;}
+	int GetVal() {return val;}
+	Node*& GetLeft() {return left;}
+	Node*& GetRight() {return right;}
+	int GetRepeats() {return repeats;}
+	void IncreaseRepeats() {++repeats;}
+
+private:
+	int val;
+	int repeats;
+	Node* left;
+	Node* right;
+};
+
+class BST {
+public:
+BST(): root(NULL){}
+~BST() {delete root; root = NULL;}
+void insert(int v);
+void insert_do(int v, Node* &r);
+void traverse();
+void traverse_do(Node* n);
+int GetRank(int v);
+int GetRank_do(Node* r, int v);
+
+private:
+Node* root;
+};
+
+
+void BST::insert(int v) {
+	if (root == NULL) {
+		root = new Node(v);
+		return;
+	} else {
+		insert_do(v, root);
+	}
+}
+
+void BST::insert_do(int v, Node* &r) {
+	if (r == NULL) {
+		r = new Node(v);
+	} else {
+		if (r->GetVal() < v) {
+			insert_do(v, r->GetRight());
+		} else if (r->GetVal() > v) {
+			insert_do(v, r->GetLeft());
+		} else {
+			r->IncreaseRepeats();
+		}
+	}
+}
+
+void BST::traverse() {
+	traverse_do(root);
+}
+
+void BST::traverse_do(Node* n) {
+	if (n ==NULL) return;
+
+	traverse_do(n->GetLeft());
+	cout<<n->GetVal()<<" "<<n->GetRepeats()<<endl;
+	traverse_do(n->GetRight());
+}
+
+int BST::GetRank(int v) {
+	return GetRank_do(root, v);
+}
+
+int BST::GetRank_do(Node* r, int v) {
+	if (r==NULL) {
+		return 0;
+	}
+
+	int ranks = 0;
+	if (r->GetVal() < v) {
+		ranks += GetRank_do(r->GetLeft(), v);
+		ranks += r->GetRepeats();
+		ranks += GetRank_do(r->GetRight(), v);
+		return ranks;
+	} else if (r->GetVal() == v) {
+		ranks += GetRank_do(r->GetLeft(), v);
+		ranks += r->GetRepeats();
+		return ranks;
+	} else {
+		ranks += GetRank_do(r->GetLeft(), v);
+		return ranks;
+	}
+}
+
+int main() {
+	BST myBST;
+
+	myBST.insert(20);
+	myBST.insert(20);
+	myBST.insert(15);
+	myBST.insert(10);
+	myBST.insert(5);
+	myBST.insert(5);
+	myBST.insert(13);
+	myBST.insert(25);
+	myBST.insert(23);
+	myBST.insert(24);
+
+	myBST.traverse();
+
+	int res = myBST.GetRank(5);
+
+	cout<<res<<endl;
+
+	return 0;
+}
