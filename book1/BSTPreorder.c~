@@ -15,36 +15,6 @@ typedef struct BSTstack
 }BSTstack;
 
 
-/*Given a node, find the next largest node in the BST;*/
-/*(1) if the node has left child, search that child for maximum node*/
-/*(2) if the node has no left child, find the nearest parent which smaller than its child node. use this node as root to find max node.*/
-
-treeElem* FindParent(treeElem *root, int node_val)
-{
-	treeElem *curr, *prev;
-
-	curr = root;
-	prev = 0;
-
-	while ((curr->val != node_val))
-	{
-		if (node_val > curr->val)
-		{
-			prev = curr;
-			curr = curr->right;
-		}
-		else
-		{
-			prev = curr;
-			curr = curr->left;
-		}
-
-		if (curr == 0)
-			return 0;
-	}
-
-	return prev;
-}
 
 void push(BSTstack **head, treeElem *val)
 {
@@ -162,7 +132,7 @@ int insertSub(treeElem *node, int val)
 	return 1;
 }
 
-int insert(treeElem **root, int val)
+int insert2(treeElem **root, int val)
 {
 	if (*root == 0)
 	{
@@ -176,11 +146,28 @@ int insert(treeElem **root, int val)
 	return 0;
 }
 
+int insert(treeElem **root, int v) {
+
+	if (*root == NULL) {
+		*root = malloc(sizeof(treeElem));
+		if (*root == NULL) return 0;
+		(*root)->val = v;
+		(*root)->left = NULL;
+		(*root)->right = NULL; 
+		return 1;
+	}else if ((*root)->val > v) {
+		return insert(&((*root)->left), v);
+	}else if ((*root)->val < v) {
+		return insert(&((*root)->right), v);
+	}else {
+		return -1;
+	}
+}
+
 int main()
 {
 	treeElem *root=0;
-	treeElem *prev;
-
+	
 	insert(&root, 100);
 	insert(&root, 50);
 	insert(&root, 150);
@@ -198,10 +185,6 @@ int main()
 	printf("\n");
 	BSTPreorder2(root);
 	printf("\n");
-
-	prev = FindParent(root, 50);
-
-	printf("father is %d\n", prev->val);
 
 
 	return 0;

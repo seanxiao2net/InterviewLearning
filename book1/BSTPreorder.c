@@ -132,7 +132,7 @@ int insertSub(treeElem *node, int val)
 	return 1;
 }
 
-int insert(treeElem **root, int val)
+int insert2(treeElem **root, int val)
 {
 	if (*root == 0)
 	{
@@ -144,6 +144,24 @@ int insert(treeElem **root, int val)
 		insertSub(*root, val);
 	}
 	return 0;
+}
+
+int insert(treeElem **root, int v) {
+
+	if (*root == NULL) {
+		*root = malloc(sizeof(treeElem));
+		if (*root == NULL) return 0;
+		(*root)->val = v;
+		(*root)->left = NULL;
+		(*root)->right = NULL; 
+		return 1;
+	}else if ((*root)->val > v) {
+		return insert(&((*root)->left), v);
+	}else if ((*root)->val < v) {
+		return insert(&((*root)->right), v);
+	}else {
+		return -1;
+	}
 }
 
 int main()
@@ -159,14 +177,14 @@ int main()
 	insert(&root, 175);
 	insert(&root, 110);
 
-	BSTPreorder(root);
-	printf("\n");
+/*	BSTPreorder(root);*/
+/*	printf("\n");*/
 	BSTInorder(root);
 	printf("\n");
-	BSTPostorder(root);
-	printf("\n");
-	BSTPreorder2(root);
-	printf("\n");
+/*	BSTPostorder(root);*/
+/*	printf("\n");*/
+/*	BSTPreorder2(root);*/
+/*	printf("\n");*/
 
 
 	return 0;
